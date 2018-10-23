@@ -1,0 +1,12 @@
+Small, simple, easily auditable tool for changing the rpath
+of an ELF executable.
+
+Can only change the rpath if it already exists and the new value is
+shorter than the old value.
+
+Usage:
+
+    rpath EXECUTABLE -- print rpath of specified executable
+    rpath PATH EXECUTABLE -- set rpath of specified executable
+
+When setting the rpath, the executable is modified in place.
