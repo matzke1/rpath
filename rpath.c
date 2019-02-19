@@ -8,6 +8,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#define VERSION "0.1"
+
 typedef unsigned char ubyte_t;
 
 typedef struct file_t {
@@ -227,10 +229,29 @@ set_rpath(const char *new_rpath, const char *file_name) {
 
 int
 main(int argc, char *argv[]) {
-    if (2 == argc) {
-        list_rpath(argv[1]);
-    } else if (3 == argc) {
-        set_rpath(argv[1], argv[2]);
+    int argno = 1;
+    for (/*void*/; argno<argc; ++argno) {
+        if (strcmp(argv[argno], "-h")==0 || strcmp(argv[argno], "--help")==0) {
+            printf("usage: %s [NEW_PATH] FILE\n", argv[0]);
+            exit(0);
+        } else if (strcmp(argv[argno], "--version")==0) {
+            puts(VERSION);
+            exit(0);
+        } else if (strcmp(argv[argno], "--")==0) {
+            ++argno;
+            break;
+        } else if (argv[argno][0] == '-') {
+            fprintf(stderr, "%s: unknown switch: %s\n", argv[0], argv[argno]);
+            exit(1);
+        } else {
+            break;
+        }
+    }
+    
+    if (argc - argno == 1) {
+        list_rpath(argv[argno]);
+    } else if (argc - argno == 2) {
+        set_rpath(argv[argno], argv[argno+1]);
     } else {
         fprintf(stderr, "usage: %s [NEW_RPATH] FILE\n", argv[0]);
         exit(1);
