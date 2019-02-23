@@ -192,6 +192,8 @@ find_rpath(const file_t *file) {
         if (5 == tag) {
             size_t strtab_va = read_u(file, dynamic.offset + i*entsize + wordsize(file), wordsize(file));
             strtab_offset = find_section_at(file, strtab_va);
+        } else if (15 == tag) {
+            rpath_offset = read_u(file, dynamic.offset + i*entsize + wordsize(file), wordsize(file));
         } else if (29 == tag) {
             rpath_offset = read_u(file, dynamic.offset + i*entsize + wordsize(file), wordsize(file));
         }
